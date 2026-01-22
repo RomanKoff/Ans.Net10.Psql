@@ -57,7 +57,7 @@ namespace Ans.Net10.Psql
 			string key)
 		{
 			Sql.AppendLine();
-			Sql.AppendLine(SuppSql.GetPsqlSS(Name, key));
+			Sql.AppendLine(SuppSql.GetPsqlSerialSequence(Name, key));
 			Sql.AppendLine();
 		}
 
