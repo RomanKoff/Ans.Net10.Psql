@@ -91,7 +91,6 @@ namespace Ans.Net10.Psql
 			IEnumerable<TSource> source,
 			Func<TSource, TTarget> newItem,
 			int bufferCount = 999,
-			bool isQuiet = false,
 			Func<TSource, string> funcDebug = null)
 			where TSource : class
 			where TTarget : class
@@ -104,12 +103,6 @@ namespace Ans.Net10.Psql
 				var count1 = 0;
 				var c1 = source.Count();
 				var i1 = bufferCount;
-				if (!isQuiet)
-				{
-					//Console.Write($"{name1}: ");
-					//SuppConsole.CursorSavePos();
-					//Console.CursorVisible = false;
-				}
 				foreach (var item1 in source)
 				{
 					target.Add(newItem(item1));
@@ -118,7 +111,7 @@ namespace Ans.Net10.Psql
 						count1 += db1.SaveChanges();
 						i1 = bufferCount;
 					}
-					if (!isQuiet)
+					if (funcDebug != null)
 					{
 						Console.WriteLine($"{name1}: {c1--} {funcDebug(item1)}  ");
 						//SuppConsole.CursorRestopePos();
@@ -126,17 +119,14 @@ namespace Ans.Net10.Psql
 				}
 				count1 += db1.SaveChanges();
 				db1.SerialSequenceSetMax($"{name1}");
-				if (!isQuiet)
-				{
-					Console.WriteLine(
-						SuppLangEn.GetDeclineEn(
-							"{0} {1} added.",
-							target.Count(),
-							"entity",
-							"entites"));
-					//Console.CursorVisible = true;
-					Console.WriteLine();
-				}
+				Console.WriteLine(
+					SuppLangEn.GetDeclineEn(
+						"{0} {1} added.",
+						target.Count(),
+						"entity",
+						"entites"));
+				//Console.CursorVisible = true;
+				Console.WriteLine();
 				return count1;
 			}
 			catch (Exception)
