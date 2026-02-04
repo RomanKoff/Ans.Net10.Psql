@@ -1,6 +1,7 @@
 ﻿namespace Ans.Net10.Psql
 {
 
+	[Obsolete]
 	public class MigrationField
 	{
 

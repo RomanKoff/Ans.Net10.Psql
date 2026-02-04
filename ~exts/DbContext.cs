@@ -97,9 +97,13 @@ namespace Ans.Net10.Psql
 		{
 			try
 			{
-				if (!(source?.Count() > 0))
-					return 0;
 				var (name1, db1) = target.GetTableNameAndContext();
+				Console.Write($"Migration [{name1}] — ");
+				if (!(source?.Count() > 0))
+				{
+					Console.WriteLine("the source is empty.");
+					return 0;
+				}				
 				var count1 = 0;
 				var c1 = source.Count();
 				var i1 = bufferCount;
@@ -126,11 +130,11 @@ namespace Ans.Net10.Psql
 						"entity",
 						"entites"));
 				//Console.CursorVisible = true;
-				Console.WriteLine();
 				return count1;
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+				Console.WriteLine($"error {ex.Message}.");
 				return -1;
 			}
 		}
@@ -147,9 +151,9 @@ namespace Ans.Net10.Psql
 			if (target.Any())
 			{
 				var (name1, _) = target.GetTableNameAndContext();
-				Console.Write($"{name1}: ");
+				Console.Write($"Migration [{name1}] — ");
 				Console.WriteLine(SuppLangEn.GetDeclineEn(
-					"contains {0} {1}.",
+					"already contains {0} {1}.",
 					target.Count(),
 					"entity",
 					"entites"));

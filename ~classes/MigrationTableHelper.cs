@@ -7,6 +7,7 @@ namespace Ans.Net10.Psql
 	/// <param name="fieldsDefinitions">
 	/// "fileld1_definition|fileld2_definition..."
 	/// </param>
+	[Obsolete]
 	public class MigrationTableHelper(
 		string name,
 		string fieldsDefinitions)
