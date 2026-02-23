@@ -95,48 +95,48 @@ namespace Ans.Net10.Psql
 			where TSource : class
 			where TTarget : class
 		{
-			try
+			//try
+			//{
+			var (name1, db1) = target.GetTableNameAndContext();
+			Console.Write($"Migration [{name1}] — ");
+			if (!(source?.Count() > 0))
 			{
-				var (name1, db1) = target.GetTableNameAndContext();
-				Console.Write($"Migration [{name1}] — ");
-				if (!(source?.Count() > 0))
+				Console.WriteLine("the source is empty.");
+				return 0;
+			}
+			var count1 = 0;
+			var c1 = source.Count();
+			var i1 = bufferCount;
+			foreach (var item1 in source)
+			{
+				target.Add(newItem(item1));
+				if (--i1 < 1)
 				{
-					Console.WriteLine("the source is empty.");
-					return 0;
-				}				
-				var count1 = 0;
-				var c1 = source.Count();
-				var i1 = bufferCount;
-				foreach (var item1 in source)
-				{
-					target.Add(newItem(item1));
-					if (--i1 < 1)
-					{
-						count1 += db1.SaveChanges();
-						i1 = bufferCount;
-					}
-					if (funcDebug != null)
-					{
-						Console.WriteLine($"{name1}: {c1--} {funcDebug(item1)}  ");
-						//SuppConsole.CursorRestopePos();
-					}
+					count1 += db1.SaveChanges();
+					i1 = bufferCount;
 				}
-				count1 += db1.SaveChanges();
-				db1.SerialSequenceSetMax($"{name1}");
-				Console.WriteLine(
-					SuppLangEn.GetDeclineEn(
-						"{0} {1} added.",
-						target.Count(),
-						"entity",
-						"entites"));
-				//Console.CursorVisible = true;
-				return count1;
+				if (funcDebug != null)
+				{
+					Console.WriteLine($"{name1}: {c1--} {funcDebug(item1)}  ");
+					//SuppConsole.CursorRestopePos();
+				}
 			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"error {ex.Message}.");
-				return -1;
-			}
+			count1 += db1.SaveChanges();
+			db1.SerialSequenceSetMax($"{name1}");
+			Console.WriteLine(
+				SuppLangEn.GetDeclineEn(
+					"{0} {1} added.",
+					target.Count(),
+					"entity",
+					"entites"));
+			//Console.CursorVisible = true;
+			return count1;
+			//}
+			//catch (Exception ex)
+			//{
+			//	Console.WriteLine($"error {ex.Message}.");
+			//	return -1;
+			//}
 		}
 
 
