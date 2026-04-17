@@ -96,35 +96,31 @@ namespace Ans.Net10.Psql
 			where TTarget : class
 		{
 			var (name1, db1) = target.GetTableNameAndContext();
-			Console.Write($"Migration [{name1}] — ");
-			if (!(source?.Count() > 0))
+			var count1 = 0;
+			var c1 = source?.Count() ?? 0;
+			var i1 = bufferCount;
+			if (!(c1 > 0))
 			{
 				Console.WriteLine("the source is empty.");
 				return 0;
 			}
-			var count1 = 0;
-			var c1 = source.Count();
-			var i1 = bufferCount;
+			Console.Write($"Migration [{name1}] — {c1}:");
+			Console.CursorVisible = false;
+			SuppConsole.CursorSavePos();
 			foreach (var item1 in source)
 			{
 				if (funcDebug != null)
 				{
 					Console.WriteLine($"{name1}: {c1--} {funcDebug(item1)}  ");
-					//SuppConsole.CursorRestopePos();
+					SuppConsole.CursorRestopePos();
 				}
 				var item2 = newItem(item1);
 				target.Add(item2);
 				if (--i1 < 1)
 				{
-					try
-					{
-						count1 += db1.SaveChanges();
-					}
-					catch (Exception ex)
-					{
-						Console.WriteLine($"error {ex.Message}.");
-						return -1;
-					}
+					count1 += db1.SaveChanges();
+					Console.Write(count1);
+					SuppConsole.CursorRestopePos();
 					i1 = bufferCount;
 				}
 			}
@@ -136,7 +132,7 @@ namespace Ans.Net10.Psql
 					target.Count(),
 					"entity",
 					"entites"));
-			//Console.CursorVisible = true;
+			Console.CursorVisible = true;
 			return count1;
 		}
 
