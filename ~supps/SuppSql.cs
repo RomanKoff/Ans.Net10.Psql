@@ -14,9 +14,9 @@ namespace Ans.Net10.Psql
 			string table,
 			string key)
 		{
-			return
-				$"select setval(pg_get_serial_sequence('public.\"{table}\"', '{key}'), " +
-				$"(select max(\"{key}\") from public.\"{table}\"));";
+			return $@"
+select setval(pg_get_serial_sequence('public.""{table}""', '{key}'),
+select max(""{key}"") from public.""{table}""));";
 		}
 
 
@@ -28,7 +28,7 @@ namespace Ans.Net10.Psql
 		{
 			if (string.IsNullOrEmpty(value))
 				return "NULL";
-			string s1 = value.Replace("'", "''");
+			var s1 = value.Replace("'", "''");
 			return $"N'{s1}'";
 		}
 
@@ -223,7 +223,7 @@ namespace Ans.Net10.Psql
 		public static string GetValue(
 			DateTime value)
 		{
-			string s1 = value.ToString("yyyy-MM-dd HH:mm:ss.000");
+			var s1 = value.ToString("yyyy-MM-dd HH:mm:ss.000");
 			return $"'{s1}'";
 			//return $"CAST(N'{s1}' AS DateTime)";
 		}
@@ -254,7 +254,7 @@ namespace Ans.Net10.Psql
 		public static string GetValue(
 			DateOnly value)
 		{
-			string s1 = value.ToString("yyyy-MM-dd");
+			var s1 = value.ToString("yyyy-MM-dd");
 			return $"'{s1}'";
 		}
 
@@ -284,7 +284,7 @@ namespace Ans.Net10.Psql
 		public static string GetValue(
 			TimeOnly value)
 		{
-			string s1 = value.ToString("HH:mm:ss.000");
+			var s1 = value.ToString("HH:mm:ss.000");
 			return $"'{s1}'";
 		}
 

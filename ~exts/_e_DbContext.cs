@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace Ans.Net10.Psql
 {
 
-	public static partial class _e
+	public static partial class _e_DbContext
 	{
 
 		/* methods */
@@ -158,22 +158,6 @@ namespace Ans.Net10.Psql
 			}
 			return target.Migration(source, newItem, bufferCount);
 		}
-
-
-		//public static int Migration<T>(
-		//	this DbSet<T> dbSet,
-		//	IEnumerable<object> items,
-		//	string fieldsDefinitions)
-		//	where T : class
-		//{
-		//	var (name1, context1) = dbSet.GetTableNameAndContext();
-		//	var helper1 = new MigrationTableHelper(name1, fieldsDefinitions);
-		//	foreach (var item1 in items)
-		//		helper1.AddInsert(item1);
-		//	var count1 = context1.ExecuteSqlRawIfPresent(helper1.Sql.ToString());
-		//	_ = context1.SerialSequenceSetMax(name1);
-		//	return count1;
-		//}
 
 
 		public static int ExecuteSqlRawIfPresent(
